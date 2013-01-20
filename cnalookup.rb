@@ -32,23 +32,25 @@ class URLMaker
 				form[FieldNames['Cert Number']]=cnum#'00561824'
 				form.radiobuttons[1].checked=true
 				#form.radiobuttons[1].checked=true
-				search_result = form.submit(form.button_with(:value=>'Go'))
+				#search_result = form.submit(form.button_with(:value=>'Go'))
 				l = agent.submit(form, form.buttons.first)
 				final = l.body
-				puts final
-				re = cnum
-				re1 = fname
-				re2 = lname
-				re3 = /(No data was found that matches your search criteria. Please try again.)/
-				if final.match(re3)
-					return false
-				else
-						if(final.match(re1)&&final.match(re2)&&final.match(re))
-						puts "Exists"
-						end
-					puts  FieldNames['Cert Number']
-					return true
+				#puts final
+				x = cnum
+				if final.include? cnum
+					puts "??!!"
 				end
+				puts final
+				 
+				doc = Nokogiri::HTML(final)
+				doc.search('//td').each do |cell|
+			  		puts cell.content
+			  		if(cell.content).include? 'No data was found that matches your search criteria. Please try again'
+			  			puts 'Not found!'
+			  			return nil
+					end
+				end
+
 		end
 	end
 end
@@ -58,5 +60,9 @@ end
 
 url = 'http://www.apps.cdph.ca.gov/cvl/SearchPage.aspx'
 p = URLMaker.new(url)
-bool x = p.InitURL('00561824', 'BENJAMIN P', 'CAACON')
-puts x
+x = p.InitURL('00561824', 'BENJAMIN P', 'CAACON')
+if x==nil
+	puts 'value does not exist'
+else
+	puts 'value exists'
+end

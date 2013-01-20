@@ -16,13 +16,15 @@ class URLMaker
 	end
 
 	def InitURL(cnum, fname, lname)
+		puts cnum
+		puts fname
+		puts lname
 		agent = Mechanize.new
 		agent.get(@url)
 		form = agent.page.form_with(:action=>/SearchPage.aspx/)
 		certNo = form.field_with(:name=>FieldNames['Cert Number'])	
 										
 		form.field_with(:name=>FieldNames['Cert Type']).options[1..-1].each do |var|
-			puts cnum
 			if(var.value == 'CNA')
 				form[FieldNames['Cert Type']]='CNA'
 				form[FieldNames['First Name']]=fname #'BENJAMIN P'
@@ -33,8 +35,7 @@ class URLMaker
 				search_result = form.submit(form.button_with(:value=>'Go'))
 				l = agent.submit(form, form.buttons.first)
 				final = l.body
-				puts cnum
-				puts fname
+				puts final
 				re = cnum
 				re1 = fname
 				re2 = lname
@@ -53,3 +54,9 @@ class URLMaker
 end
 
 end
+
+
+url = 'http://www.apps.cdph.ca.gov/cvl/SearchPage.aspx'
+p = URLMaker.new(url)
+bool x = p.InitURL('00561824', 'BENJAMIN P', 'CAACON')
+puts x

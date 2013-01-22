@@ -28,8 +28,8 @@ class URLMaker
 		certNo = form.field_with(:name=>FieldNames['Cert Number'])	
 		form.field_with(:name=>FieldNames['Cert Type']).options[2..2].each do |var|
 				form[FieldNames['Cert Type']]='CNA'
-				form[FieldNames['First Name']]='BENJAMIN P'
-				form[FieldNames['Last Name']]='CAACON'
+				form[FieldNames['First Name']]='X'
+				form[FieldNames['Last Name']]='Y'
 				form[FieldNames['Cert Number']]='00561824'
 				
 				search_result = form.submit(form.button_with(:value=>'Go'))
